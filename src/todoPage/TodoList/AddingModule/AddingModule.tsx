@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch } from '../../../redux/hooks/hook';
 import { Input } from '../../common/Input';
-import { addTodo } from '../../TodoPage.slice';
+import { addTags, addTodo } from '../../TodoPage.slice';
 import './AddingModule.style.scss';
+import { TagsButton } from '../../common/TagsButton';
 
 interface AddingModuleProps {
   onShow: React.Dispatch<React.SetStateAction<boolean>>;
@@ -11,14 +12,13 @@ interface AddingModuleProps {
 export const AddingModule = ({ onShow }: AddingModuleProps) => {
   const dispatch = useAppDispatch();
   const [title, setTitleInput] = useState('');
-  const [date, setDate] = useState('');
   const [content, setContent] = useState('');
+  const [tags, setTags] = useState<RegExpMatchArray | null | string[]>(null);
+
+  const whitespace = content.match(/\s/g);
 
   const handleChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitleInput(event.target.value);
-  };
-  const handleChangeDate = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDate(event.target.value);
   };
   const handleChangeContent = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(event.target.value);
@@ -26,17 +26,28 @@ export const AddingModule = ({ onShow }: AddingModuleProps) => {
   const handleClose = () => {
     onShow((prev) => !prev);
   };
+  const findTags = () => {
+    const regex = /(?<= )#\w+/g;
+    const match = content.match(regex);
+    setTags(match);
+  };
 
   const handleSave = () => {
     const todoData = {
       title,
-      date,
       content,
-      id: title + date + Math.random(),
+      tags,
+      id: title + Math.random(),
     };
     dispatch(addTodo(todoData));
+    dispatch(addTags(tags));
     onShow((prev) => !prev);
   };
+
+  useEffect(() => {
+    findTags();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [whitespace?.length]);
 
   return (
     <div
@@ -54,21 +65,16 @@ export const AddingModule = ({ onShow }: AddingModuleProps) => {
           onChangeFunc={handleChangeTitle}
           value={title}
         />
-        <Input
-          data={{
-            text: 'Date: ',
-            type: 'date',
-            placeholder: '',
-            id: 'date',
-          }}
-          onChangeFunc={handleChangeDate}
-          value={date}
-        />
         <textarea
           className='todoContent'
           onChange={(event) => handleChangeContent(event)}
           value={content}
         />
+        <div className='tagsWrapper'>
+          {tags?.map((el) => (
+            <TagsButton key={el + Math.random()} tag={el} onRemove={setTags} allTags={tags} />
+          ))}
+        </div>
         <button type='button' onClick={handleSave}>
           Confirm
         </button>

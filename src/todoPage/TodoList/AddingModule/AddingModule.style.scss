@@ -33,5 +33,17 @@
             resize: none;
             font-size: 25px;
         }
+        .tagsWrapper{
+            width: 100%;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            & div{
+                padding: 5px;
+                border: 1px solid black;
+                border-radius: 15px;
+                background-color: white;
+            }
+        }
     }  
 }
