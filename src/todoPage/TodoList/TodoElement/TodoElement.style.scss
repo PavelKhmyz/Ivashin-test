@@ -1,9 +1,27 @@
 .todoElement{
     width: 250px;
     height: 250px;
-    transition: all 1s;
-    background-color: yellow;
+    background-color: rgb(253, 253, 85);
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    position: relative;
+    color: rgb(51, 50, 50);
+    font-size: 25px;
+    & button{
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        width: 25px;
+        height: 25px;
+        padding: 7px;
+        border-radius: 50%;
+        border: 1px solid rgb(51, 50, 50);
+        background-color: inherit;
+        display: flex;            
+        justify-content: center;
+        align-items: center;
+        fill:rgb(51, 50, 50);
+    }
 }

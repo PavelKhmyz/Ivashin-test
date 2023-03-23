@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAppDispatch } from '../../../redux/hooks/hook';
+import { CloseIcon } from '../../common/TagsButtonsBlock/CloseIcon';
 import { removeTodoElement } from '../../TodoPage.slice';
 import { TodoElementData } from '../../TodoPage.state';
 import { MoreDetails } from './MoreDetails/MoreDetails';
@@ -24,10 +25,10 @@ export const TodoElement = ({ content }: TodoElementProps) => {
     <>
       <div onClick={handleOpenMoreDetails} className='todoElement'>
         <button type='button' onClick={handleRemove}>
-          remove
+          <CloseIcon />
         </button>
-        {content.title}
-        {content.content}
+        <h3>{content.title}</h3>
+        <p>{content.content}</p>
       </div>
       {moreDetails && <MoreDetails content={content} onClose={setMoreDetails} />}
     </>

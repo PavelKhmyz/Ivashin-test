@@ -7,6 +7,7 @@ import './TodoPage.style.scss';
 
 export const TodoPage = () => {
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     const todoArr = sessionStorage.getItem('TodoArray');
     const tagsArr = sessionStorage.getItem('TagsArray');
@@ -17,6 +18,7 @@ export const TodoPage = () => {
       dispatch(parseTags(tagsArr));
     }
   }, [dispatch]);
+
   return (
     <div className='todoPage'>
       <SearchPannel />
