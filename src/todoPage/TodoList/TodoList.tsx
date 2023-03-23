@@ -5,20 +5,25 @@ import { TodoElement } from './TodoElement/TodoElement';
 import './TodoList.style.scss';
 
 export const TodoList = () => {
-  const { todoArr } = useAppSelector((state) => state.todo);
+  const { filteredList } = useAppSelector((state) => state.todo);
   const [showAddingForm, setShowAddingForm] = useState(false);
+
   const addTodo = () => {
     setShowAddingForm((prev) => !prev);
   };
+
   return (
-    <div className='todoList'>
-      {todoArr.map((el) => (
-        <TodoElement key={el.id} content={el} />
-      ))}
-      <button className='todoListAddButton' type='button' onClick={addTodo}>
-        <div>+</div>
-      </button>
+    <>
+      <h2>Todo List:</h2>
+      <div className='todoList'>
+        {filteredList.map((el) => (
+          <TodoElement key={el.id} content={el} />
+        ))}
+        <button className='todoListAddButton' type='button' onClick={addTodo}>
+          <div>+</div>
+        </button>
+      </div>
       {showAddingForm && <AddingModule onShow={setShowAddingForm} />}
-    </div>
+    </>
   );
 };

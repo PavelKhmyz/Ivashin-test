@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { TagsButtonsBlock } from '../../../common/TagsButtonsBlock/TagsButtonsBlock';
 import { TodoElementData } from '../../../TodoPage.state';
-import { EditMenu } from './EditMenu';
+import { AddingModule } from '../../AddingModule/AddingModule';
 import './MoreDetails.style.scss';
 
 interface MoreDetailsProps {
@@ -21,14 +22,24 @@ export const MoreDetails = ({ content, onClose }: MoreDetailsProps) => {
   return (
     <div className='moreDetailsWrapper' onClick={(e) => handleClose(e)}>
       <div className='moreDetailsTodo' onDoubleClick={handleEdit}>
-        <p>
-          Please click{' '}
-          <button type='button' onClick={handleEdit}>
-            here
-          </button>{' '}
-          to edit or double-click on any place
-        </p>
-        {!edit ? content.content : <EditMenu close={setEdit} data={content} />}
+        {!edit ? (
+          <>
+            <div className='detailsContent'>
+              <h3>{content.title}</h3>
+              <p>{content.content}</p>
+              <TagsButtonsBlock tag={content.tags} />
+            </div>
+            <p>
+              Please click{' '}
+              <button className='editButton' type='button' onClick={handleEdit}>
+                here
+              </button>{' '}
+              to edit or double-click on any place
+            </p>
+          </>
+        ) : (
+          <AddingModule onShow={setEdit} initialValue={content} />
+        )}
       </div>
     </div>
   );

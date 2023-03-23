@@ -1,26 +1,29 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks/hook';
 import { Input } from '../common/Input';
-import { TagsButton } from '../common/TagsButton';
-import { filterList } from '../TodoPage.slice';
+import { TagsButtonsBlock } from '../common/TagsButtonsBlock/TagsButtonsBlock';
+import { changeSearchValue, filterList } from '../TodoPage.slice';
 import './SearchPannel.style.scss';
 
 export const SearchPannel = () => {
-  const [searchValue, setValue] = useState('');
+  const { searchValue } = useAppSelector((state) => state.todo);
   const { tagsArr } = useAppSelector((state) => state.todo);
   const dispatch = useAppDispatch();
+
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
+    dispatch(changeSearchValue(e.target.value));
   };
-  const clickSearch = () => {
-    const valuesArr = searchValue.split(' ');
-    valuesArr.forEach((e) => dispatch(filterList(e)));
-  };
+
+  useEffect(() => {
+    dispatch(filterList(searchValue));
+  }, [dispatch, searchValue]);
+
   return (
     <div className='searchPannel'>
+      <h1>NybleCraft test-task</h1>
       <Input
         data={{
-          text: 'Enter tags: ',
+          text: '',
           type: 'text',
           placeholder: 'Enter Tags...',
           id: 'search',
@@ -28,14 +31,7 @@ export const SearchPannel = () => {
         onChangeFunc={(e) => handleSearch(e)}
         value={searchValue}
       />
-      <button type='button' onClick={clickSearch}>
-        Search
-      </button>
-      <div>
-        {tagsArr.map((el) => (
-          <TagsButton tag={el} />
-        ))}
-      </div>
+      <TagsButtonsBlock hardRemove tag={tagsArr} />
     </div>
   );
 };
