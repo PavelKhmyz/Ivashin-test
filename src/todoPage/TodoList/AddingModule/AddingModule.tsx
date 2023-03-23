@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAppDispatch } from '../../../redux/hooks/hook';
 import { Input } from '../../common/Input';
 import { addTags, addTodo } from '../../TodoPage.slice';
@@ -6,7 +6,6 @@ import './AddingModule.style.scss';
 import { TagsButtonsBlock } from '../../common/TagsButtonsBlock/TagsButtonsBlock';
 import { CloseIcon } from '../../common/TagsButtonsBlock/CloseIcon';
 import { TodoElementData } from '../../TodoPage.state';
-import { Test } from './Test';
 
 interface AddingModuleProps {
   initialValue?: TodoElementData;
@@ -56,46 +55,11 @@ export const AddingModule = ({
     onShow((prev) => !prev);
   };
 
-  const replaceTags = (text: string) => {
-    const regex = /(?<= )#\w+/g;
-    const match = text.match(regex);
-    const strArr = text.split(regex);
-
-    const bla: string[] = [];
-
-    strArr.forEach((e, i) => {
-      bla.push(e);
-      if (match && match[i] !== undefined) bla.push(`<h1>${match[i]}</h1>`);
-    });
-    console.log(bla.join(''));
-
-    return bla.join('');
-  };
-
-  const [test, setTest] = useState<string | null>('');
-
-  const changeTest = (e: React.FormEvent<HTMLDivElement>) => {
-    setTest(e.currentTarget.textContent);
-  };
-  useEffect(() => {
-    const kek = document.querySelector('.bla');
-    if (kek && test) {
-      kek.innerHTML = replaceTags(test);
-    }
-  }, [test]);
   return (
     <div
       className='addingModuleWrapper'
       onClick={(e) => e.currentTarget === e.target && handleClose()}
     >
-      <div
-        className='bla'
-        contentEditable
-        style={{ width: '100px', height: '100px', backgroundColor: 'white' }}
-        onInput={(e) => changeTest(e)}
-      >
-        <Test text={test} />
-      </div>
       <div className='addingForm'>
         <div className='innerData'>
           <Input
