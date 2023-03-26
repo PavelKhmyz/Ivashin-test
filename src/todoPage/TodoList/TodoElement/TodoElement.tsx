@@ -1,3 +1,4 @@
+/* eslint-disable react/no-danger */
 import { useState } from 'react';
 import { useAppDispatch } from '../../../redux/hooks/hook';
 import { CloseIcon } from '../../common/TagsButtonsBlock/CloseIcon';
@@ -5,6 +6,7 @@ import { removeTodoElement } from '../../TodoPage.slice';
 import { TodoElementData } from '../../TodoPage.state';
 import { MoreDetails } from './MoreDetails/MoreDetails';
 import './TodoElement.style.scss';
+import { editContent } from './TodoElement.utils';
 
 interface TodoElementProps {
   content: TodoElementData;
@@ -28,7 +30,7 @@ export const TodoElement = ({ content }: TodoElementProps) => {
           <CloseIcon />
         </button>
         <h3>{content.title}</h3>
-        <p>{content.content}</p>
+        <p>{editContent(content.content)}</p>
       </div>
       {moreDetails && <MoreDetails content={content} onClose={setMoreDetails} />}
     </>

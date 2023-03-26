@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { TagsButtonsBlock } from '../../../common/TagsButtonsBlock/TagsButtonsBlock';
 import { TodoElementData } from '../../../TodoPage.state';
 import { AddingModule } from '../../AddingModule/AddingModule';
+import { editContent } from '../TodoElement.utils';
 import './MoreDetails.style.scss';
 
 interface MoreDetailsProps {
@@ -26,7 +27,7 @@ export const MoreDetails = ({ content, onClose }: MoreDetailsProps) => {
           <>
             <div className='detailsContent'>
               <h3>{content.title}</h3>
-              <p>{content.content}</p>
+              <p>{editContent(content.content)}</p>
               <TagsButtonsBlock tag={content.tags} />
             </div>
             <p>

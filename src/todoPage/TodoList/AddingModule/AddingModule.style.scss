@@ -50,7 +50,13 @@
             font-size: 30px;
             background-color: rgb(238, 210, 176);
             border-radius: 10px;
-            color:rgb(51, 50, 50)
+            color:rgb(51, 50, 50);
+            &:hover{
+                background-color: rgb(216, 190, 157);
+            }
+            &:active{
+                background-color: rgb(238, 210, 176);
+            }
         }      
         .closeButton{
             position: absolute;
@@ -60,12 +66,17 @@
             height: 25px;
             padding: 7px;
             border-radius: 50%;
-            border: 1px solid rgb(51, 50, 50);
             background-color: inherit;
             display: flex;            
             justify-content: center;
             align-items: center;
             fill:rgb(51, 50, 50);
+            &:hover{
+                background-color: rgb(238, 95, 95);
+            }
+            &:active{
+                background-color: rgb(247, 0, 0);
+            }
         }
     }  
 }

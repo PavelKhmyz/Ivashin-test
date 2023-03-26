@@ -2,7 +2,7 @@
     width: 100%;
     display: flex;
     gap: 20px;
-    flex-wrap: wrap;
+    flex-wrap: wrap;    
     & div{
         padding: 5px;
         border-radius: 15px;
@@ -11,6 +11,13 @@
         display: flex;
         gap: 10px;
         color:rgb(2, 105, 173);
+        cursor: pointer;
+        &:hover{
+            background-color: rgb(216, 190, 157);
+        }
+        &:active{
+            background-color: rgb(238, 210, 176);
+        }
         & button{
             width: 25px;
             height: 25px;
@@ -21,6 +28,12 @@
             justify-content: center;
             align-items: center;
             fill:rgb(51, 50, 50);
+            &:hover{
+                background-color: rgb(238, 95, 95);
+            }
+            &:active{
+                background-color: rgb(247, 0, 0);
+            }
         }
     }
 }

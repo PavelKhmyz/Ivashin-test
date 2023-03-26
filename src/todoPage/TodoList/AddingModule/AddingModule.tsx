@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 import { useAppDispatch } from '../../../redux/hooks/hook';
 import { Input } from '../../common/Input';
 import { addTags, addTodo } from '../../TodoPage.slice';
@@ -24,21 +25,25 @@ export const AddingModule = ({
   const handleChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitleInput(event.target.value);
   };
-  const findTags = () => {
-    const regex = /(?<= )#\w+/g;
-    const match = content.match(regex);
+  const handleChangeContent = (event: ContentEditableEvent) => {
+    const regex = /(?<= )#\w+\s/g;
+    const regexForTagsList = /#\w+/g;
+    const replacingTags = event.target.value.replace(
+      regex,
+      (str) => `<span style= "color: blue">${str}</span>`
+    );
+    const match = event.target.value.match(regexForTagsList);
+
     if (match) {
       const uniqFilter = match.filter((el, ind) => ind === match.indexOf(el));
       setTags(uniqFilter);
     }
-  };
-  const handleChangeContent = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(event.target.value);
+
+    setContent(replacingTags);
   };
   const handleClose = () => {
     onShow((prev) => !prev);
   };
-
   const handleSave = () => {
     const todoData = {
       title,
@@ -46,6 +51,7 @@ export const AddingModule = ({
       tags,
       id: title + Math.random(),
     };
+
     if (initialValue.id) {
       todoData.id = initialValue.id;
     }
@@ -72,12 +78,7 @@ export const AddingModule = ({
             onChangeFunc={handleChangeTitle}
             value={title}
           />
-          <textarea
-            className='todoContent'
-            onChange={(event) => handleChangeContent(event)}
-            value={content}
-            onInput={findTags}
-          />
+          <ContentEditable className='todoContent' html={content} onChange={handleChangeContent} />
           <TagsButtonsBlock tag={tags} onRemove={setTags} />
         </div>
         <button className='saveButton' type='button' onClick={handleSave}>

@@ -28,6 +28,9 @@
             font-size: 20px;
             background-color: inherit;
             text-decoration: underline;
+            &:hover{
+                color: blue;
+            }
         }
     }
 }
