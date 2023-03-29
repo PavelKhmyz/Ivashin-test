@@ -6,8 +6,7 @@ import { changeSearchValue, filterList } from '../TodoPage.slice';
 import './SearchPannel.style.scss';
 
 export const SearchPannel = () => {
-  const { searchValue } = useAppSelector((state) => state.todo);
-  const { tagsArr } = useAppSelector((state) => state.todo);
+  const { searchValue, tagsArr } = useAppSelector((state) => state.todo);
   const dispatch = useAppDispatch();
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +27,7 @@ export const SearchPannel = () => {
           placeholder: 'Enter Tags...',
           id: 'search',
         }}
-        onChangeFunc={(e) => handleSearch(e)}
+        onChangeFunc={handleSearch}
         value={searchValue}
       />
       <TagsButtonsBlock hardRemove tag={tagsArr} />

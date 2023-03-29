@@ -1,54 +1,50 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { todoState } from './TodoPage.state';
+import { updateSessionStorage } from './TodoPage.utils';
 
 const todoSlice = createSlice({
   name: 'Todo',
   initialState: todoState,
   reducers: {
-    removeTodoElement: (state, action) => {
-      const removed = state.todoArr.filter((el) => el.id !== action.payload);
-      state.todoArr = removed;
-      state.filteredList = state.todoArr;
-      sessionStorage.removeItem('TodoArray');
-      sessionStorage.setItem('TodoArray', JSON.stringify(state.todoArr));
-    },
-    saveChanges: (state, action) => {
-      const { id, content, title } = action.payload;
-      state.todoArr = state.todoArr.map((el) => (el.id === id ? { ...el, content, title } : el));
-      state.filteredList = state.todoArr;
-      sessionStorage.removeItem('TodoArray');
-      sessionStorage.setItem('TodoArray', JSON.stringify(state.todoArr));
-    },
     addTodo: (state, action) => {
-      const isNew = state.todoArr.findIndex((el) => el.id === action.payload.id);
+      const isChanging = state.todoArr.findIndex((el) => el.id === action.payload.id);
 
-      if (isNew >= 0) {
-        state.todoArr[isNew] = action.payload;
+      if (isChanging >= 0) {
+        state.todoArr[isChanging] = action.payload;
         state.filteredList = state.todoArr;
       } else {
         state.todoArr = [...state.todoArr, action.payload];
         state.filteredList = state.todoArr;
       }
-
-      sessionStorage.removeItem('TodoArray');
-      sessionStorage.setItem('TodoArray', JSON.stringify(state.todoArr));
+      updateSessionStorage('TodoArray', state.todoArr);
     },
-    parseData: (state, action) => {
-      state.todoArr = JSON.parse(action.payload);
+    saveChanges: (state, action) => {
+      const { id, content, title } = action.payload;
+      state.todoArr = state.todoArr.map((el) => (el.id === id ? { ...el, content, title } : el));
+      state.filteredList = state.todoArr;
+      updateSessionStorage('TodoArray', state.todoArr);
+    },
+    removeTodoElement: (state, action) => {
+      const removed = state.todoArr.filter((el) => el.id !== action.payload);
+      state.todoArr = removed;
+      state.filteredList = state.todoArr;
+      updateSessionStorage('TodoArray', state.todoArr);
+    },
+
+    getDataFromSessionStorage: (state) => {
+      const todo = sessionStorage.getItem('TodoArray');
+      const tags = sessionStorage.getItem('TagsArray');
+      state.todoArr = todo ? JSON.parse(todo) : [];
+      state.tagsArr = tags ? JSON.parse(tags) : [];
     },
     addTags: (state, action) => {
       const concat = [...state.tagsArr, ...action.payload];
       state.tagsArr = concat.filter((el, ind) => ind === concat.indexOf(el));
-      sessionStorage.removeItem('TagsArray');
-      sessionStorage.setItem('TagsArray', JSON.stringify(state.tagsArr));
+      updateSessionStorage('TagsArray', state.tagsArr);
     },
     removeTag: (state, action) => {
       state.tagsArr = state.tagsArr.filter((el) => el !== action.payload);
-      sessionStorage.removeItem('TagsArray');
-      sessionStorage.setItem('TagsArray', JSON.stringify(state.tagsArr));
-    },
-    parseTags: (state, action) => {
-      state.tagsArr = JSON.parse(action.payload);
+      updateSessionStorage('TagsArray', state.tagsArr);
     },
     filterList: (state, action) => {
       if (!action.payload) {
@@ -70,10 +66,9 @@ export const {
   removeTodoElement,
   saveChanges,
   addTodo,
-  parseData,
   addTags,
   removeTag,
-  parseTags,
+  getDataFromSessionStorage,
   filterList,
   changeSearchValue,
 } = todoSlice.actions;

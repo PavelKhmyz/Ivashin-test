@@ -26,20 +26,28 @@ export const AddingModule = ({
     setTitleInput(event.target.value);
   };
   const handleChangeContent = (event: ContentEditableEvent) => {
-    const regex = /(?<= )#\w+\s/g;
-    const regexForTagsList = /#\w+/g;
-    const replacingTags = event.target.value.replace(
-      regex,
-      (str) => `<span style= "color: blue">${str}</span>`
-    );
-    const match = event.target.value.match(regexForTagsList);
-
+    const findForTagsList = /#\w+\s/g;
+    const inputTags = /(?<= )#\w+\s/g;
+    const changingTags = /<span>#\w+<\/span>/g;
+    const match = event.target.value.match(findForTagsList);
     if (match) {
       const uniqFilter = match.filter((el, ind) => ind === match.indexOf(el));
       setTags(uniqFilter);
     }
 
-    setContent(replacingTags);
+    const removeHtml = (str: string) => {
+      const reg = /(?<=)#\w+(?<=)/;
+      const find = str.match(reg);
+      if (find) {
+        return find[0];
+      }
+      return str;
+    };
+
+    const checkForTags = event.target.value.replace(inputTags, (str) => `<span>${str}</span>`);
+    const checkForInvalidHtml = checkForTags.replace(changingTags, (str) => removeHtml(str));
+
+    setContent(checkForInvalidHtml);
   };
   const handleClose = () => {
     onShow((prev) => !prev);

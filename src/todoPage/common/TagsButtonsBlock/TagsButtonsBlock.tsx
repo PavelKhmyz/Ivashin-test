@@ -1,4 +1,4 @@
-import { useAppDispatch } from '../../../redux/hooks/hook';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks/hook';
 import { changeSearchValue, removeTag } from '../../TodoPage.slice';
 import { CloseIcon } from './CloseIcon';
 import './TagsButtonBlock.style.scss';
@@ -15,9 +15,10 @@ export const TagsButtonsBlock = ({
   onRemove = null,
 }: TagsButtonsBlockProps) => {
   const dispatch = useAppDispatch();
+  const { searchValue } = useAppSelector((state) => state.todo);
 
   const handleSearch = (value: string) => {
-    dispatch(changeSearchValue(value));
+    dispatch(changeSearchValue(`${searchValue} ${value}`));
   };
   const handleHardRemove = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, e: string) => {
     event.stopPropagation();

@@ -42,7 +42,10 @@
                 padding: 20px;
                 font-size: 25px;
                 resize: none;
-                color:rgb(51, 50, 50)
+                color:rgb(51, 50, 50);
+                & span{
+                    color: blue;
+                }
             }
         }  
         .saveButton{
